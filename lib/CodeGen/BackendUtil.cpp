@@ -706,7 +706,7 @@ void EmitAssemblyHelper::EmitAssembly(BackendAction Action,
         }
       }
       PerModulePasses.add(
-          createWriteThinLTOBitcodePass(*OS, ThinLinkOS.get()));
+                          createWriteThinLTOBitcodePass(*OS /*, ThinLinkOS.get() */));
     }
     else
       PerModulePasses.add(

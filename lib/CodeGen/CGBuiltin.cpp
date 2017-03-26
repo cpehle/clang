@@ -8032,6 +8032,12 @@ Value *CodeGenFunction::EmitPPCBuiltinExpr(unsigned BuiltinID,
 
   Intrinsic::ID ID = Intrinsic::not_intrinsic;
 
+  // FXV Intrinsics
+  auto getFXVIntrinsicCall = [this, &Ops](Intrinsic::ID ID) {
+    llvm::Function *F = CGM.getIntrinsic(ID);
+    return Builder.CreateCall(F, Ops, "");
+  };
+
   switch (BuiltinID) {
   default: return nullptr;
 
@@ -8171,6 +8177,146 @@ Value *CodeGenFunction::EmitPPCBuiltinExpr(unsigned BuiltinID,
     llvm::Function *F = CGM.getIntrinsic(ID);
     return Builder.CreateCall(F, Ops, "");
   }
+
+  // fxv lax / inx
+  case PPC::BI__builtin_fxv_lax:
+  case PPC::BI__builtin_fxv_inx:
+  {
+    // TODO(Christian): What does this do?
+    Ops[1] = Builder.CreateBitCast(Ops[1], Int8PtrTy);
+    Ops[0] = Builder.CreateGEP(Ops[1], Ops[0]);
+    Ops.pop_back();
+    switch (BuiltinID) {
+    default: llvm_unreachable("Unsupported lax/inx intrinsic!");
+    case PPC::BI__builtin_fxv_lax:
+      ID = Intrinsic::ppc_fxv_lax;
+      break;
+    case PPC::BI__builtin_fxv_inx:
+      ID = Intrinsic::ppc_fxv_inx;
+      break;
+    }
+    llvm::Function *F = CGM.getIntrinsic(ID);
+    return Builder.CreateCall(F, Ops, "");
+  }
+
+  // fxv stax / outx
+  case PPC::BI__builtin_fxv_stax:
+  case PPC::BI__builtin_fxv_outx:
+  {
+    Ops[2] = Builder.CreateBitCast(Ops[2], Int8PtrTy);
+    Ops[1] = Builder.CreateGEP(Ops[2], Ops[1]);
+    Ops.pop_back();
+    switch (BuiltinID) {
+    default: llvm_unreachable("Unsupported stax/outx intrinsic!");
+    case PPC::BI__builtin_fxv_stax:
+      ID = Intrinsic::ppc_fxv_stax;
+      break;
+    case PPC::BI__builtin_fxv_outx:
+      ID = Intrinsic::ppc_fxv_outx;
+      break;
+    }
+    llvm::Function *F = CGM.getIntrinsic(ID);
+    return Builder.CreateCall(F, Ops, "");
+  }
+  case PPC::BI__builtin_fxv_splath:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_splath);
+  case PPC::BI__builtin_fxv_splatb:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_splatb);
+  case PPC::BI__builtin_fxv_mahm:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_mahm);
+  case PPC::BI__builtin_fxv_matachm:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_matachm);
+  case PPC::BI__builtin_fxv_mulhm:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_mulhm);
+  case PPC::BI__builtin_fxv_multachm:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_multachm);
+  case PPC::BI__builtin_fxv_subhm:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_subhm);
+  case PPC::BI__builtin_fxv_addactachm:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_addactachm);
+  case PPC::BI__builtin_fxv_addtachm:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_addtachm);
+  case PPC::BI__builtin_fxv_addachm:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_addachm);
+  case PPC::BI__builtin_fxv_addhm:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_addhm);
+  case PPC::BI__builtin_fxv_cmphm:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_cmphm);
+  case PPC::BI__builtin_fxv_mtach:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_mtach);
+  case PPC::BI__builtin_fxv_mabm:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_mabm);
+  case PPC::BI__builtin_fxv_matacbm:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_matacbm);
+  case PPC::BI__builtin_fxv_mulbm:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_mulbm);
+  case PPC::BI__builtin_fxv_multacbm:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_multacbm);
+  case PPC::BI__builtin_fxv_subbm:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_subbm);
+  case PPC::BI__builtin_fxv_addactacb:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_addactacb);
+  case PPC::BI__builtin_fxv_addtacb:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_addtacb);
+  case PPC::BI__builtin_fxv_addacbm:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_addacbm);
+  case PPC::BI__builtin_fxv_addbm:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_addbm);
+  case PPC::BI__builtin_fxv_mtacb:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_mtacb);
+  case PPC::BI__builtin_fxv_cmpb:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_cmpb);
+  case PPC::BI__builtin_fxv_mahfs:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_mahfs);
+  case PPC::BI__builtin_fxv_mtachf:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_mtachf);
+  case PPC::BI__builtin_fxv_matachfs:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_matachfs);
+  case PPC::BI__builtin_fxv_mulhfs:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_mulhfs);
+  case PPC::BI__builtin_fxv_multachfs:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_multachfs);
+  case PPC::BI__builtin_fxv_subhfs:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_subhfs);
+  case PPC::BI__builtin_fxv_addactachf:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_addactachf);
+  case PPC::BI__builtin_fxv_addachfs:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_addachfs);
+  case PPC::BI__builtin_fxv_addhfs:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_addhfs);
+  case PPC::BI__builtin_fxv_mabfs:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_mabfs);
+  case PPC::BI__builtin_fxv_mtacbf:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_mtacbf);
+  case PPC::BI__builtin_fxv_matacbfs:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_matacbfs);
+  case PPC::BI__builtin_fxv_mulbfs:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_mulbfs);
+  case PPC::BI__builtin_fxv_multacbfs:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_multacbfs);
+  case PPC::BI__builtin_fxv_subbfs:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_subbfs);
+  case PPC::BI__builtin_fxv_addactacbf:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_addactacbf);
+  case PPC::BI__builtin_fxv_addacbfs:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_addacbfs);
+  case PPC::BI__builtin_fxv_addbfs:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_addbfs);
+  case PPC::BI__builtin_fxv_vsel:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_vsel);
+  case PPC::BI__builtin_fxv_shh:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_shh);
+  case PPC::BI__builtin_fxv_shb:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_shb);
+  case PPC::BI__builtin_fxv_pckbu:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_pckbu);
+  case PPC::BI__builtin_fxv_pckbl:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_pckbl);
+  case PPC::BI__builtin_fxv_upckbl:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_upckbl);
+  case PPC::BI__builtin_fxv_upckbr:
+    return getFXVIntrinsicCall(Intrinsic::ppc_fxv_upckbr);
+
   // Square root
   case PPC::BI__builtin_vsx_xvsqrtsp:
   case PPC::BI__builtin_vsx_xvsqrtdp: {

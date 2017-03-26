@@ -460,4 +460,66 @@ BUILTIN(__builtin_bpermd, "SLLiSLLiSLLi", "")
 
 // FIXME: Obviously incomplete.
 
+// FXV
+
+BUILTIN(__builtin_fxv_splath, "V8UsUi", "")
+BUILTIN(__builtin_fxv_splatb, "V16UsUi", "")
+
+BUILTIN(__builtin_fxv_mahm, "V8UsV8UsV8Us", "")
+BUILTIN(__builtin_fxv_matachm, "V8UsV8UsV8Us", "")
+BUILTIN(__builtin_fxv_mulhm, "V8UsV8UsV8Us", "")
+BUILTIN(__builtin_fxv_multachm, "V8UsV8UsV8Us", "")
+BUILTIN(__builtin_fxv_subhm, "V8UsV8UsV8Us", "")
+BUILTIN(__builtin_fxv_addactachm, "V8UsV8UsV8Us", "")
+BUILTIN(__builtin_fxv_addtachm, "V8UsV8UsV8Us", "")
+BUILTIN(__builtin_fxv_addachm, "V8UsV8UsV8Us", "")
+BUILTIN(__builtin_fxv_addhm, "V8UsV8UsV8Us", "")
+BUILTIN(__builtin_fxv_mtach, "V8UsV8UsV8Us", "")
+BUILTIN(__builtin_fxv_cmphm, "vV8Us", "")
+
+BUILTIN(__builtin_fxv_mabm, "V16UcV16UcV16Uc", "")
+BUILTIN(__builtin_fxv_matacbm, "V16UcV16UcV16Uc", "")
+BUILTIN(__builtin_fxv_mulbm, "V16UcV16UcV16Uc", "")
+BUILTIN(__builtin_fxv_multacbm, "V16UcV16UcV16Uc", "")
+BUILTIN(__builtin_fxv_subbm, "V16UcV16UcV16Uc", "")
+BUILTIN(__builtin_fxv_addactacb, "V16UcV16UcV16Uc", "")
+BUILTIN(__builtin_fxv_addtacb, "V16UcV16UcV16Uc", "")
+BUILTIN(__builtin_fxv_addacbm, "V16UcV16UcV16Uc", "")
+BUILTIN(__builtin_fxv_addbm, "V16UcV16UcV16Uc", "")
+BUILTIN(__builtin_fxv_mtacb, "V16UcV16UcV16Uc", "")
+BUILTIN(__builtin_fxv_cmpb, "vV16Uc", "")
+
+BUILTIN(__builtin_fxv_mahfs, "V8UsV8UsV8Us", "")
+BUILTIN(__builtin_fxv_mtachf, "V8UsV8UsV8Us", "")
+BUILTIN(__builtin_fxv_matachfs, "V8UsV8UsV8Us", "")
+BUILTIN(__builtin_fxv_mulhfs, "V8UsV8UsV8Us", "")
+BUILTIN(__builtin_fxv_multachfs, "V8UsV8UsV8Us", "")
+BUILTIN(__builtin_fxv_subhfs, "V8UsV8UsV8Us", "")
+BUILTIN(__builtin_fxv_addactachf, "V8UsV8UsV8Us", "")
+BUILTIN(__builtin_fxv_addachfs, "V8UsV8UsV8Us", "")
+BUILTIN(__builtin_fxv_addhfs, "V8UsV8UsV8Us", "")
+
+BUILTIN(__builtin_fxv_mabfs, "V16UcV16UcV16Uc", "")
+BUILTIN(__builtin_fxv_mtacbf, "V16UcV16UcV16Uc", "")
+BUILTIN(__builtin_fxv_matacbfs, "V16UcV16UcV16Uc", "")
+BUILTIN(__builtin_fxv_mulbfs, "V16UcV16UcV16Uc", "")
+BUILTIN(__builtin_fxv_multacbfs, "V16UcV16UcV16Uc", "")
+BUILTIN(__builtin_fxv_subbfs, "V16UcV16UcV16Uc", "")
+BUILTIN(__builtin_fxv_addactacbf, "V16UcV16UcV16Uc", "")
+BUILTIN(__builtin_fxv_addacbfs, "V16UcV16UcV16Uc", "")
+BUILTIN(__builtin_fxv_addbfs, "V16UcV16UcV16Uc", "")
+
+BUILTIN(__builtin_fxv_vsel, "V16UcV16UcV16Uc", "")
+BUILTIN(__builtin_fxv_shh, "V16UcV16UcV16Uc", "")
+BUILTIN(__builtin_fxv_shb, "V16UcV16UcV16Uc", "")
+BUILTIN(__builtin_fxv_pckbu, "V16UcV16UcV16Uc", "")
+BUILTIN(__builtin_fxv_pckbl, "V16UcV16UcV16Uc", "")
+BUILTIN(__builtin_fxv_upckbl, "V16UcV16UcV16Uc", "")
+BUILTIN(__builtin_fxv_upckbr, "V16UcV16UcV16Uc", "")
+
+BUILTIN(__builtin_fxv_lax, "V16UcUiUi", "")
+BUILTIN(__builtin_fxv_stax, "vV16UcUiUi", "")
+BUILTIN(__builtin_fxv_inx, "V16UcUiUi", "")
+BUILTIN(__builtin_fxv_outx, "vV16UcUiUi", "")
+
 #undef BUILTIN
